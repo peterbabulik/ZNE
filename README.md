@@ -86,3 +86,50 @@ Method:              EstimatorV2 (ZNE Mitigation)
 
 This project is open source and available under the MIT License.
 
+
+
+
+# What is Zero Noise Extrapolation (ZNE)?
+
+Imagine you are trying to listen to your favorite song on the radio, but there is a lot of **static (noise)**. You can't perfectly hear the notes.
+
+In quantum computing, the "static" is real. Quantum computers are imperfect, and the answers they give you are slightly "fuzzy" or wrong because of this noise.
+
+**Zero Noise Extrapolation (ZNE)** is a clever math trick we use to clean up that static without needing to buy a new (and expensive) perfect quantum computer.
+
+### The Problem
+You run a calculation on a quantum computer.
+*   **The Truth:** The answer should be `5`.
+*   **The Reality:** Because of noise, the computer gives you `4`.
+
+### The "ZNE" Trick (Intentionally Making It Worse)
+
+To find the "True" answer, ZNE does something that sounds crazy at first: **It runs the calculation multiple times, but intentionally makes the noise worse each time.**
+
+Think of it like taking a photo while the camera is shaking.
+
+1.  **Run 1 (Normal):** You take a photo with the shaking camera. It’s a bit blurry. (You see a `4`).
+2.  **Run 2 (Double Noise):** You shake the camera *twice as much* while taking the photo. It is very blurry. (You see a `3`).
+3.  **Run 3 (Triple Noise):** You shake the camera *three times as much*. It is a total mess. (You see a `2`).
+
+### The Extrapolation (Drawing the Line)
+
+Now you have three data points on a graph:
+*   At **1x Shake**, you saw a `4`.
+*   At **2x Shake**, you saw a `3`.
+*   At **3x Shake**, you saw a `2`.
+
+You draw a line connecting these points and extend that line **backwards** to where the "Shake" is **Zero**.
+
+*   The line points back to... **`5`**!
+
+By seeing how the result gets worse as the noise gets higher, you can mathematically predict what the result would be if there were **no noise at all**.
+
+### Summary
+
+*   **Quantum Computers are noisy:** They make mistakes.
+*   **ZNE runs the job multiple times:** It adds artificial noise to see how the errors grow.
+*   **We do some math:** We look at the trend and calculate the answer backwards to "Zero Noise."
+
+This is exactly what the line `options.resilience.zne_mitigation = True` did in code. It made the computer work a bit harder, but it gave you a much more accurate answer
+
